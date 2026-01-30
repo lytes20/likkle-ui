@@ -1,6 +1,6 @@
-import { FileOrFolder } from "./types";
+import { FileData } from "./types";
 
-export const data: FileOrFolder[] = [
+export const data: FileData[] = [
   {
     id: 1,
     name: "README.md",

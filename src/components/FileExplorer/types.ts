@@ -1,5 +1,5 @@
-export interface FileOrFolder {
+export interface FileData {
   id: number;
   name: string;
-  children?: FileOrFolder[];
+  children?: FileData[];
 }

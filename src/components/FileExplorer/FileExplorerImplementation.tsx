@@ -1,58 +1,57 @@
 import { useState } from "react";
-import { FileOrFolder } from "./types";
+import { FileData } from "./types";
 
-interface FileExplorerProps {
-  data: FileOrFolder[] | undefined;
+interface FileObjectProps {
+  file: FileData;
+  level: number;
 }
-export default function FileExplorer({ data }: FileExplorerProps) {
-  if (!data || data.length < 0) {
-    return null;
-  }
+function FileObject(props: FileObjectProps) {
+  const { file, level } = props;
+  const [expanded, setExpanded] = useState(false);
+  const { children: fileChildren, name: fileName } = file;
 
-  const [dataToDisplay, setDataToDisplay] = useState(
-    data.map((item) => ({ ...item, childrenOpen: false }))
-  );
-  const handleDisplayChildren = (
-    id: number,
-    children: FileOrFolder[] | undefined
-  ) => {
-    if (!children) {
+  const handleDisplayChildren = () => {
+    console.log("fileChildren", fileChildren);
+    if (!fileChildren) {
       return;
     }
-    setDataToDisplay((prevData) => {
-      return prevData.map((dataItem) => {
-        if (dataItem.id == id) {
-          return {
-            ...dataItem,
-            childrenOpen: !dataItem.childrenOpen,
-          };
-        }
-        return dataItem;
-      });
-    });
+    setExpanded(!expanded);
   };
 
   return (
+    <li>
+      <button style={{ cursor: "pointer" }} onClick={handleDisplayChildren}>
+        📁{fileName}
+      </button>
+
+      {fileChildren && expanded && (
+        <FileList fileList={fileChildren} level={level + 1} />
+      )}
+    </li>
+  );
+}
+
+interface FileListProps {
+  fileList: FileData[];
+  level: number;
+}
+
+function FileList(props: FileListProps) {
+  const { fileList, level } = props;
+  return (
     <ul>
-      {dataToDisplay.map(({ id, name, children, childrenOpen }) => {
-        let display = "none";
-        if (childrenOpen) {
-          display = "block";
-        }
-        return (
-          <li key={`${id}${name}`}>
-            <button
-              style={{ cursor: "pointer" }}
-              onClick={() => handleDisplayChildren(id, children)}
-            >
-              📁{name}
-            </button>
-            <div style={{ display }}>
-              <FileExplorer data={children} />
-            </div>
-          </li>
-        );
+      {fileList.map((file) => {
+        return <FileObject key={file.id} file={file} level={level} />;
       })}
     </ul>
   );
 }
+
+interface FileExplorerProps {
+  data: FileData[];
+}
+
+function FileExplorer({ data }: FileExplorerProps) {
+  return <FileList fileList={data} level={1} />;
+}
+export default FileExplorer;
