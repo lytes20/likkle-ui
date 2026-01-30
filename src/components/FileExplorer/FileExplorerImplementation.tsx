@@ -2,10 +2,13 @@ import { useState } from "react";
 import { FileOrFolder } from "./types";
 
 interface FileExplorerProps {
-  data: FileOrFolder[];
+  data: FileOrFolder[] | undefined;
 }
 export default function FileExplorer({ data }: FileExplorerProps) {
-  const [message, setMessage] = useState("File Explorer");
+  if (!data || data.length < 0) {
+    return null;
+  }
+
   const [dataToDisplay, setDataToDisplay] = useState(
     data.map((item) => ({ ...item, childrenOpen: false }))
   );
@@ -30,35 +33,26 @@ export default function FileExplorer({ data }: FileExplorerProps) {
   };
 
   return (
-    <div>
-      <h1>{message}</h1>
-      <ul>
-        {dataToDisplay.map(({ id, name, children, childrenOpen }) => {
-          let display = "none";
-          if (childrenOpen) {
-            display = "block";
-          }
-          return (
-            <li key={id}>
-              <button
-                style={{ cursor: "pointer" }}
-                onClick={() => handleDisplayChildren(id, children)}
-              >
-                📁{name}
-              </button>
-              <ul style={{ display: `${display}` }}>
-                {children?.map((child) => (
-                  <li key={`${child.id}-${child.name}`}>
-                    <button onClick={() => handleDisplayChildren(children)}>
-                      {child.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <ul>
+      {dataToDisplay.map(({ id, name, children, childrenOpen }) => {
+        let display = "none";
+        if (childrenOpen) {
+          display = "block";
+        }
+        return (
+          <li key={`${id}${name}`}>
+            <button
+              style={{ cursor: "pointer" }}
+              onClick={() => handleDisplayChildren(id, children)}
+            >
+              📁{name}
+            </button>
+            <div style={{ display }}>
+              <FileExplorer data={children} />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
