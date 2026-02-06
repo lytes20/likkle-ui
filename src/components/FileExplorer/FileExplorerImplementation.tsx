@@ -11,7 +11,6 @@ function FileObject(props: FileObjectProps) {
   const { children: fileChildren, name: fileName } = file;
 
   const handleDisplayChildren = () => {
-    console.log("fileChildren", fileChildren);
     if (!fileChildren) {
       return;
     }
