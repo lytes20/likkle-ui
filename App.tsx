@@ -1,11 +1,16 @@
 import { useState } from "react";
 import FileExplorer from "./src/components/FileExplorer";
+import HolyGrail from "./src/components/HolyGrail";
 
 const COMPONENTS = {
   FILE_EXPLORER: "File Explorer",
+  HOLY_GRAIL: "Holy Grail",
 };
 
-const COMPONENT_NODE = { [COMPONENTS.FILE_EXPLORER]: <FileExplorer /> };
+const COMPONENT_NODE = {
+  [COMPONENTS.FILE_EXPLORER]: <FileExplorer />,
+  [COMPONENTS.HOLY_GRAIL]: <HolyGrail />,
+};
 
 function App() {
   const [componentToDisplay, setComponentToDisplay] = useState(

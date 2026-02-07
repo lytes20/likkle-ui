@@ -1,0 +1,35 @@
+.holy-grail {
+  display: flex;
+  flex-direction: column;
+  min-height: 50vh;
+  text-align: center;
+}
+
+.meat {
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+}
+
+.holy-grail header {
+  background-color: tomato;
+}
+
+.holy-grail main {
+  background-color: moccasin;
+  flex-grow: 1;
+}
+
+.holy-grail nav {
+  flex-shrink: 0;
+  background-color: coral;
+}
+
+.holy-grail aside {
+  flex-shrink: 0;
+  background-color: sandybrown;
+}
+
+.holy-grail footer {
+  background-color: slategray;
+}
